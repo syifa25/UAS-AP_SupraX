@@ -1,7 +1,4 @@
 # 🚗 Kelompok SupraX
-Andareas Pegri Damanik 241401116
-Octho Rivaldo Sinaga (241401122)
-Rizki Nanda Syahputra Pasaribu 241401035
 
 ## 👥 Anggota Kelompok
 
