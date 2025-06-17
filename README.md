@@ -5,7 +5,7 @@
 | Nama Lengkap                     | NIM           |
 |----------------------------------|---------------|
 | Umri Marsyifa                    | 241401029     |
-| Rizki Nanda Syahputra Pasaribu   | 241401029     |
+| Rizki Nanda Syahputra Pasaribu   | 241401035     |
 | Andareas Pegri Damanik           | 241401116     |
 | Octho Rivaldo Sinaga             | 241401122     |
 
