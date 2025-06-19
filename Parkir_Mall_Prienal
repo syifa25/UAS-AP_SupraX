@@ -20,6 +20,16 @@ struct Kendaraan {
     Waktu waktuKeluar;
 };
 
+int hitungDurasi(const Waktu& masuk, const Waktu& keluar) {
+    int detikMasuk = masuk.jam * 3600 + masuk.menit * 60 + masuk.detik;
+    int detikKeluar = keluar.jam * 3600 + keluar.menit * 60 + keluar.detik;
+    return detikKeluar - detikMasuk;
+
+int hitungBiaya(int durasiDetik) {
+    int durasiJam = (durasiDetik + 3599) / 3600; // Pembulatan ke atas
+    if (durasiJam < 1) durasiJam = 1; // Minimal 1 jam
+    return durasiJam * 2000;
+
 // Fungsi untuk menambah kendaraan
 void tambahKendaraan(vector<Kendaraan>& daftarKendaraan) {
     const int KAPASITAS_MAKSIMAL = 50;
@@ -75,6 +85,58 @@ void tambahKendaraan(vector<Kendaraan>& daftarKendaraan) {
     cout << "==================================================================================\n";
 }
 
+void pembayaran(vector<Kendaraan>& daftarKendaraan) {
+    if (daftarKendaraan.empty()) {
+        cout << "\n==================================================================================\n";
+        cout << "                           Belum ada kendaraan terdaftar.                        \n";
+        cout << "==================================================================================\n";
+        return;
+    }
+    
+    string platKeluar;
+    cout << "\n==================================================================================\n";
+    cout << "                                  PEMBAYARAN                                     \n";
+    cout << "==================================================================================\n";
+    cout << "Masukkan plat nomor kendaraan yang akan keluar : ";
+    cin >> platKeluar;
+    
+    for (auto& k : daftarKendaraan) {
+        if (k.plat == platKeluar && !k.sudahKeluar) {
+            cout << "Masukkan waktu keluar (jam menit detik) : ";
+            cin >> k.waktuKeluar.jam >> k.waktuKeluar.menit >> k.waktuKeluar.detik;
+            
+            k.sudahKeluar = true;
+            
+            int durasiDetik = hitungDurasi(k.waktuMasuk, k.waktuKeluar);
+            int biaya = hitungBiaya(durasiDetik);
+            int jam = durasiDetik / 3600;
+            int menit = (durasiDetik % 3600) / 60;
+            
+            cout << "\n==================================================================================\n";
+            cout << "                               DETAIL PEMBAYARAN                                 \n";
+            cout << "==================================================================================\n";
+            cout << "Plat Nomor      : " << k.plat << endl;
+            cout << "Merek           : " << k.merek << endl;
+            cout << "Warna           : " << k.warna << endl;
+            cout << "Waktu Masuk     : ";
+            tampilkanWaktu(k.waktuMasuk);
+            cout << "\nWaktu Keluar    : ";
+            tampilkanWaktu(k.waktuKeluar);
+            cout << "\nDurasi Parkir   : " << jam << " jam " << menit << " menit" << endl;
+            cout << "Tarif           : Rp 2.000/jam (minimal 1 jam)" << endl;
+            cout << "Total Biaya     : Rp " << biaya << endl;
+            cout << "==================================================================================\n";
+            cout << "                            TERIMA KASIH ATAS KUNJUNGAN!                         \n";
+            cout << "                                HATI-HATI DI JALAN                              \n";
+            cout << "==================================================================================\n";
+            return;
+        }
+    }
+    
+    cout << "\n==================================================================================\n";
+    cout << "         Kendaraan dengan plat " << platKeluar << " tidak ditemukan atau sudah keluar!         \n";
+    cout << "==================================================================================\n";
+}
 
 int main(){
     Petugas p;
