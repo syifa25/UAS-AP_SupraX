@@ -19,6 +19,63 @@ struct Kendaraan {
     Waktu waktuMasuk;
     Waktu waktuKeluar;
 };
+
+// Fungsi untuk menambah kendaraan
+void tambahKendaraan(vector<Kendaraan>& daftarKendaraan) {
+    const int KAPASITAS_MAKSIMAL = 50;
+    
+    // Hitung kendaraan yang masih parkir
+    int kendaraanAktif = 0;
+    for (const auto& k : daftarKendaraan) {
+        if (!k.sudahKeluar) kendaraanAktif++;
+    }
+    
+    // Cek kapasitas penuh
+    if (kendaraanAktif >= KAPASITAS_MAKSIMAL) {
+        cout << "\n==================================================================================\n";
+        cout << "                              PARKIR PENUH!                                      \n";
+        cout << "         Maaf, kapasitas parkir sudah penuh (" << KAPASITAS_MAKSIMAL << " kendaraan).\n";
+        cout << "                    Silahkan coba lagi nanti.                                   \n";
+        cout << "==================================================================================\n";
+        return;
+    }
+    
+    Kendaraan kendaraanBaru;
+    
+    cout << "\n==================================================================================\n";
+    cout << "                            TAMBAH KENDARAAN BARU                                 \n";
+    cout << "==================================================================================\n";
+    
+    cout << "Masukkan plat nomor  : ";
+    cin >> kendaraanBaru.plat;
+    
+    // Cek apakah plat sudah ada dan belum keluar
+    for (const auto& k : daftarKendaraan) {
+        if (k.plat == kendaraanBaru.plat && !k.sudahKeluar) {
+            cout << "\nMaaf, kendaraan dengan plat " << kendaraanBaru.plat << " sudah ada di parkir!\n";
+            return;
+        }
+    }
+    
+    cout << "Masukkan merek       : ";
+    cin >> kendaraanBaru.merek;
+    cout << "Masukkan warna       : ";
+    cin >> kendaraanBaru.warna;
+    cout << "Masukkan waktu masuk (jam menit detik) : ";
+    cin >> kendaraanBaru.waktuMasuk.jam >> kendaraanBaru.waktuMasuk.menit >> kendaraanBaru.waktuMasuk.detik;
+    
+    daftarKendaraan.push_back(kendaraanBaru);
+    
+    cout << "\n==================================================================================\n";
+    cout << "                         KENDARAAN BERHASIL DITAMBAHKAN!                         \n";
+    cout << "Plat : " << kendaraanBaru.plat << " | Merek : " << kendaraanBaru.merek << " | Warna : " << kendaraanBaru.warna << endl;
+    cout << "Waktu masuk : ";
+    tampilkanWaktu(kendaraanBaru.waktuMasuk);
+    cout << "\nSisa tempat parkir : " << (KAPASITAS_MAKSIMAL - kendaraanAktif - 1) << " kendaraan" << endl;
+    cout << "==================================================================================\n";
+}
+
+
 int main(){
     Petugas p;
     cout<<"==================================================================================\n";
