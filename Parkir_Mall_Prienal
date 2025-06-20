@@ -180,9 +180,12 @@ int main() {
         cout << "Masukkan opsi : ";
         cin >> pilihan;
 
-        if (pilihan == 1) {
+       switch (pilihan) {
+        case 1:
             tambahKendaraan(daftarKendaraan);
-        } else if (pilihan == 2) {
+            break;
+
+        case 2:
             if (daftarKendaraan.empty()) {
                 cout << "\nBelum ada kendaraan yang parkir.\n";
             } else {
@@ -199,16 +202,22 @@ int main() {
                     }
                 }
             }
-        } else if (pilihan == 3) {
+            break;
+
+        case 3:
             pembayaran(daftarKendaraan);
-        } else if (pilihan == 4) {
+            break;
+
+        case 4:
             cout << "\nTerima kasih. Program selesai.\n";
-        } else {
+            break;
+
+        default:
             cout << "Pilihan tidak valid.\n";
-        }
+            break;
+    }
 
-    } while (pilihan != 4);
-
+} while (pilihan != 4);
    
 
    
