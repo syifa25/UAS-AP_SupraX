@@ -28,4 +28,4 @@ Teknologi:
 
 ## 🎥 Video Presentasi
 
-🎬 [Tonton di YouTube](LINK_VIDEO_DI_SINI)
+🎬 [Tonton di YouTube](https://youtu.be/aH3Gm5je-2w)
