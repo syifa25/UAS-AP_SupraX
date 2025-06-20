@@ -3,9 +3,25 @@
 #include <vector>
 using namespace std;
 
-struct Petugas {
-    string nama;
-    string id;
+string daftarWarna[5] = {"Hitam", "Putih", "Merah", "Biru", "Abu-abu"};
+
+class Petugas {
+    private:
+    string nama, id;
+
+    public:
+        void inputData(){
+            cout << "\nMasukkan nama : ";
+            cin >> ws; // Buang whitespace sisa (termasuk newline)
+            getline(cin, nama);
+            cout << "Masukkan ID : ";
+            cin >> id;
+        }
+
+        void tampilData(){
+            cout << "Nama Petugas : " << nama << endl;
+            cout << "ID Petugas   : " << id << endl;
+        }
 };
 
 struct Waktu {
@@ -78,6 +94,10 @@ void tambahKendaraan(vector<Kendaraan>& daftarKendaraan) {
 
     cout << "Masukkan merek       : ";
     cin >> kendaraanBaru.merek;
+    cout << "\nContoh warna kendaraan umum: ";
+    for (int i = 0; i < 5; i++) {
+        cout << daftarWarna[i] << (i < 4 ? ", " : "\n");
+    }
     cout << "Masukkan warna       : ";
     cin >> kendaraanBaru.warna;
     cout << "Masukkan waktu masuk (jam menit detik) : ";
@@ -92,6 +112,12 @@ void tambahKendaraan(vector<Kendaraan>& daftarKendaraan) {
     tampilkanWaktu(kendaraanBaru.waktuMasuk);
     cout << "\nSisa tempat parkir : " << (KAPASITAS_MAKSIMAL - kendaraanAktif - 1) << " kendaraan" << endl;
     cout << "==================================================================================\n";
+}
+
+void tampilkanPointer(Kendaraan* k) {
+    cout << "\n[Data via Pointer] Plat: " << k->plat 
+         << " | Merek: " << k->merek 
+         << " | Warna: " << k->warna << endl;
 }
 
 // Fungsi untuk hapus kendaraan berdasarkan plat
@@ -216,20 +242,16 @@ int main() {
     cout<<"==================================================================================\n";
     cout<<"\nKami senang anda telah hadir.\n";
     cout<<"Sebelum melanjutkan, silahkan masukkan informasi Anda yang akan bertugas hari ini.\n";
-    cout <<"\nMasukkan nama  : ";
-    cin >> p.nama;
-    cout <<"Masukkan ID    : ";
-    cin >> p.id;
+    p.inputData();
     cout<<"==================================================================================\n";
-    cout << "Nama Petugas  : " << p.nama << endl;
-    cout << "ID Petugas    : " << p.id << endl;
+    p.tampilData();
     cout << "\n                           TERIMAKASIH ATAS KERJASAMANYA !\n";
     cout << "-------------------------- S E L A M A T  B E R T U G A S ------------------------- \n";
 
     do {
         cout << "\nSilahkan input opsi berikut dalam bentuk angka.\n";
         cout << "1. Tambahkan Daftar Kendaraan\n";
-        cout << "2. Hapus Daftar Kendaraan\n"
+        cout << "2. Hapus Daftar Kendaraan\n";
         cout << "3. Tampilkan Daftar Kendaraan\n";
         cout << "4. Pembayaran\n";
         cout << "5. Keluar Program\n";
@@ -258,6 +280,8 @@ int main() {
                         cout << "Warna  : " << daftarKendaraan[i].warna << endl;
                         cout << "Masuk  : ";
                         tampilkanWaktu(daftarKendaraan[i].waktuMasuk);
+                        tampilkanPointer(&daftarKendaraan[i]); // <- Ini pemakaian pointer
+
                         cout << endl;
                     }
                 }
@@ -277,7 +301,7 @@ int main() {
             break;
     }
 
-} while (pilihan != 4);
+} while (pilihan != 5);}
    
 
    
