@@ -7,40 +7,50 @@ struct Petugas {
     string nama;
     string id;
 };
-struct Waktu{
+
+struct Waktu {
     int jam;
     int menit;
     int detik;
 };
+
 struct Kendaraan {
     string plat;
     string merek;
     string warna;
     Waktu waktuMasuk;
     Waktu waktuKeluar;
+    bool sudahKeluar = false; // Tambahan untuk pelacakan
 };
 
+// Fungsi untuk menampilkan waktu
+void tampilkanWaktu(const Waktu& w) {
+    cout << w.jam << ":" << w.menit << ":" << w.detik;
+}
+
+// Fungsi hitung durasi parkir (detik)
 int hitungDurasi(const Waktu& masuk, const Waktu& keluar) {
     int detikMasuk = masuk.jam * 3600 + masuk.menit * 60 + masuk.detik;
     int detikKeluar = keluar.jam * 3600 + keluar.menit * 60 + keluar.detik;
     return detikKeluar - detikMasuk;
+}
 
+// Fungsi hitung biaya berdasarkan durasi
 int hitungBiaya(int durasiDetik) {
     int durasiJam = (durasiDetik + 3599) / 3600; // Pembulatan ke atas
     if (durasiJam < 1) durasiJam = 1; // Minimal 1 jam
     return durasiJam * 2000;
+}
 
 // Fungsi untuk menambah kendaraan
 void tambahKendaraan(vector<Kendaraan>& daftarKendaraan) {
-    const int KAPASITAS_MAKSIMAL = 50;
+    const int KAPASITAS_MAKSIMAL = 20; // Ubah dari 50 ke 20
     
-    // Hitung kendaraan yang masih parkir
     int kendaraanAktif = 0;
     for (const auto& k : daftarKendaraan) {
         if (!k.sudahKeluar) kendaraanAktif++;
     }
-    
-    // Cek kapasitas penuh
+
     if (kendaraanAktif >= KAPASITAS_MAKSIMAL) {
         cout << "\n==================================================================================\n";
         cout << "                              PARKIR PENUH!                                      \n";
@@ -49,33 +59,32 @@ void tambahKendaraan(vector<Kendaraan>& daftarKendaraan) {
         cout << "==================================================================================\n";
         return;
     }
-    
+
     Kendaraan kendaraanBaru;
-    
+
     cout << "\n==================================================================================\n";
     cout << "                            TAMBAH KENDARAAN BARU                                 \n";
     cout << "==================================================================================\n";
-    
+
     cout << "Masukkan plat nomor  : ";
     cin >> kendaraanBaru.plat;
-    
-    // Cek apakah plat sudah ada dan belum keluar
+
     for (const auto& k : daftarKendaraan) {
         if (k.plat == kendaraanBaru.plat && !k.sudahKeluar) {
             cout << "\nMaaf, kendaraan dengan plat " << kendaraanBaru.plat << " sudah ada di parkir!\n";
             return;
         }
     }
-    
+
     cout << "Masukkan merek       : ";
     cin >> kendaraanBaru.merek;
     cout << "Masukkan warna       : ";
     cin >> kendaraanBaru.warna;
     cout << "Masukkan waktu masuk (jam menit detik) : ";
     cin >> kendaraanBaru.waktuMasuk.jam >> kendaraanBaru.waktuMasuk.menit >> kendaraanBaru.waktuMasuk.detik;
-    
+
     daftarKendaraan.push_back(kendaraanBaru);
-    
+
     cout << "\n==================================================================================\n";
     cout << "                         KENDARAAN BERHASIL DITAMBAHKAN!                         \n";
     cout << "Plat : " << kendaraanBaru.plat << " | Merek : " << kendaraanBaru.merek << " | Warna : " << kendaraanBaru.warna << endl;
@@ -85,6 +94,7 @@ void tambahKendaraan(vector<Kendaraan>& daftarKendaraan) {
     cout << "==================================================================================\n";
 }
 
+// Fungsi pembayaran
 void pembayaran(vector<Kendaraan>& daftarKendaraan) {
     if (daftarKendaraan.empty()) {
         cout << "\n==================================================================================\n";
@@ -92,26 +102,26 @@ void pembayaran(vector<Kendaraan>& daftarKendaraan) {
         cout << "==================================================================================\n";
         return;
     }
-    
+
     string platKeluar;
     cout << "\n==================================================================================\n";
     cout << "                                  PEMBAYARAN                                     \n";
     cout << "==================================================================================\n";
     cout << "Masukkan plat nomor kendaraan yang akan keluar : ";
     cin >> platKeluar;
-    
+
     for (auto& k : daftarKendaraan) {
         if (k.plat == platKeluar && !k.sudahKeluar) {
             cout << "Masukkan waktu keluar (jam menit detik) : ";
             cin >> k.waktuKeluar.jam >> k.waktuKeluar.menit >> k.waktuKeluar.detik;
-            
+
             k.sudahKeluar = true;
-            
+
             int durasiDetik = hitungDurasi(k.waktuMasuk, k.waktuKeluar);
             int biaya = hitungBiaya(durasiDetik);
             int jam = durasiDetik / 3600;
             int menit = (durasiDetik % 3600) / 60;
-            
+
             cout << "\n==================================================================================\n";
             cout << "                               DETAIL PEMBAYARAN                                 \n";
             cout << "==================================================================================\n";
@@ -132,178 +142,18 @@ void pembayaran(vector<Kendaraan>& daftarKendaraan) {
             return;
         }
     }
-    
+
     cout << "\n==================================================================================\n";
     cout << "         Kendaraan dengan plat " << platKeluar << " tidak ditemukan atau sudah keluar!         \n";
     cout << "==================================================================================\n";
 }
 
-int main(){
-    Petugas p;
-    cout<<"==================================================================================\n";
-    cout<<"--------------------------- S E L A M A T  D A T A N G --------------------------- \n";
-    cout <<"                           DI PORTAL PARKIR KHUSUS MOBIL       \n";
-    cout<<"                                   MAL PRIENAL \n";
-    cout<<"==================================================================================\n";
-    cout<<"\nKami senang anda telah hadir.\n";
-    cout<<"Sebelum melanjutkan, silahkan masukkan informasi Anda yang akan bertugas hari ini.\n";
-    cout <<"\nMasukkan nama  : ";
-    cin >> p.nama;
-    cout <<"Masukkan ID    : ";
-    cin >> p.id;
-    cout<<"==================================================================================\n";
-    cout << "Nama Petugas  : " << p.nama << endl;
-    cout << "ID Petugas    : " << p.id << endl;
-    cout << "\n                           TERIMAKASIH ATAS KERJASAMANYA !\n";
-    cout << "-------------------------- S E L A M A T  B E R T U G A S ------------------------- \n";
-    cout << "Silahkan input opsi berikut dalam bentuk angka.\n";
-    cout << "1. Tambahkan Daftar Kendaraan" << endl;
-    cout << "2. Tampilkan Daftar Kendaraan" << endl;
-    cout << "3. Pembayaran" << endl;
-    cout << "4. Keluar Program" << endl;
-    cout << "Masukkan opsi : ";
-    
-    
-
-}
-const int MAX_KENDARAAN = 20;
-
-struct Kendaraan {
-    string plat;
-    string merk;
-    string warna;
-};
-
-
-void tampilkanDaftar(Kendaraan daftar[], int jumlah) {
-    if (jumlah == 0) {
-        cout << "\nBelum ada kendaraan yang parkir.\n";
-        return;
-    }
-
-    cout << "\nDAFTAR MOBIL YANG SUDAH TERPARKIR:\n";
-    for (int i = 0; i < jumlah; i++) {
-        cout << "\nMobil ke-" << i + 1 << endl;
-        cout << "Plat  : " << daftar[i].plat << endl;
-        cout << "Merk  : " << daftar[i].merk << endl;
-        cout << "Warna : " << daftar[i].warna << endl;
-    }
-}
-
-
-void tambahKendaraan(Kendaraan daftar[], int &jumlah) {
-    int banyak;
-    cout << "\nMasukkan jumlah mobil yang akan diparkirkan: ";
-    cin >> banyak;
-
-    if (jumlah + banyak > MAX_KENDARAAN) {
-        cout << "Maaf, parkiran hanya dapat memuat " << MAX_KENDARAAN << " mobil!\n";
-        return;
-    }
-
-    for (int i = 0; i < banyak; i++) {
-        cout << "\nMobil ke-" << (jumlah + 1) << endl;
-        cout << "Masukkan plat mobil  : ";
-        cin >> daftar[jumlah].plat;
-        cout << "Masukkan merk mobil  : ";
-        cin >> daftar[jumlah].merk;
-        cout << "Masukkan warna mobil : ";
-        cin >> daftar[jumlah].warna;
-        jumlah++;
-    }
-}
-
+// Tambahkan main program loop
 int main() {
-    Kendaraan daftar[MAX_KENDARAAN];
-    int jumlahKendaraan = 0;
+    Petugas p;
+    vector<Kendaraan> daftarKendaraan;
     int pilihan;
 
-    do {
-        cout << "\n=====================================\n";
-        cout << "1. Tambahkan Daftar Kendaraan\n";
-        cout << "2. Tampilkan Daftar Kendaraan\n";
-        cout << "3. Keluar\n";
-        cout << "Masukkan pilihan: ";
-
-#include <iostream>
-#include <vector>
-using namespace std;
-
-struct Petugas {
-    string nama;
-    string id;
-};
-struct Waktu{
-    int jam;
-    int menit;
-    int detik;
-};
-struct Kendaraan {
-    string plat;
-    string merek;
-    string warna;
-    Waktu waktuMasuk;
-    Waktu waktuKeluar;
-};
-
-// Fungsi untuk menambah kendaraan
-void tambahKendaraan(vector<Kendaraan>& daftarKendaraan) {
-    const int KAPASITAS_MAKSIMAL = 50;
-    
-    // Hitung kendaraan yang masih parkir
-    int kendaraanAktif = 0;
-    for (const auto& k : daftarKendaraan) {
-        if (!k.sudahKeluar) kendaraanAktif++;
-    }
-    
-    // Cek kapasitas penuh
-    if (kendaraanAktif >= KAPASITAS_MAKSIMAL) {
-        cout << "\n==================================================================================\n";
-        cout << "                              PARKIR PENUH!                                      \n";
-        cout << "         Maaf, kapasitas parkir sudah penuh (" << KAPASITAS_MAKSIMAL << " kendaraan).\n";
-        cout << "                    Silahkan coba lagi nanti.                                   \n";
-        cout << "==================================================================================\n";
-        return;
-    }
-    
-    Kendaraan kendaraanBaru;
-    
-    cout << "\n==================================================================================\n";
-    cout << "                            TAMBAH KENDARAAN BARU                                 \n";
-    cout << "==================================================================================\n";
-    
-    cout << "Masukkan plat nomor  : ";
-    cin >> kendaraanBaru.plat;
-    
-    // Cek apakah plat sudah ada dan belum keluar
-    for (const auto& k : daftarKendaraan) {
-        if (k.plat == kendaraanBaru.plat && !k.sudahKeluar) {
-            cout << "\nMaaf, kendaraan dengan plat " << kendaraanBaru.plat << " sudah ada di parkir!\n";
-            return;
-        }
-    }
-    
-    cout << "Masukkan merek       : ";
-    cin >> kendaraanBaru.merek;
-    cout << "Masukkan warna       : ";
-    cin >> kendaraanBaru.warna;
-    cout << "Masukkan waktu masuk (jam menit detik) : ";
-    cin >> kendaraanBaru.waktuMasuk.jam >> kendaraanBaru.waktuMasuk.menit >> kendaraanBaru.waktuMasuk.detik;
-    
-    daftarKendaraan.push_back(kendaraanBaru);
-    
-    cout << "\n==================================================================================\n";
-    cout << "                         KENDARAAN BERHASIL DITAMBAHKAN!                         \n";
-    cout << "Plat : " << kendaraanBaru.plat << " | Merek : " << kendaraanBaru.merek << " | Warna : " << kendaraanBaru.warna << endl;
-    cout << "Waktu masuk : ";
-    tampilkanWaktu(kendaraanBaru.waktuMasuk);
-    cout << "\nSisa tempat parkir : " << (KAPASITAS_MAKSIMAL - kendaraanAktif - 1) << " kendaraan" << endl;
-    cout << "==================================================================================\n";
-}
-
-
-int main(){
-    Petugas p;
     cout<<"==================================================================================\n";
     cout<<"--------------------------- S E L A M A T  D A T A N G --------------------------- \n";
     cout <<"                           DI PORTAL PARKIR KHUSUS MOBIL       \n";
@@ -320,54 +170,45 @@ int main(){
     cout << "ID Petugas    : " << p.id << endl;
     cout << "\n                           TERIMAKASIH ATAS KERJASAMANYA !\n";
     cout << "-------------------------- S E L A M A T  B E R T U G A S ------------------------- \n";
-    cout << "Silahkan input opsi berikut dalam bentuk angka.\n";
-    cout << "1. Tambahkan Daftar Kendaraan" << endl;
-    cout << "2. Tampilkan Daftar Kendaraan" << endl;
-    cout << "3. Pembayaran" << endl;
-    cout << "4. Keluar Program" << endl;
-    cout << "Masukkan opsi : ";
-    cin >> pilihan;
 
-vector<Kendaraan> daftarKendaraan;
+    do {
+        cout << "\nSilahkan input opsi berikut dalam bentuk angka.\n";
+        cout << "1. Tambahkan Daftar Kendaraan\n";
+        cout << "2. Tampilkan Daftar Kendaraan\n";
+        cout << "3. Pembayaran\n";
+        cout << "4. Keluar Program\n";
+        cout << "Masukkan opsi : ";
+        cin >> pilihan;
 
-do {
-    cout << "\n=====================================\n";
-    cout << "1. Tambahkan Daftar Kendaraan\n";
-    cout << "2. Tampilkan Daftar Kendaraan\n";
-    cout << "3. Pembayaran\n";
-    cout << "4. Keluar Program\n";
-    cout << "Masukkan opsi : ";
-    cin >> pilihan;
-
-    if (pilihan == 1) {
-        tambahKendaraan(daftarKendaraan);
-    } else if (pilihan == 2) {
-        if (daftarKendaraan.empty()) {
-            cout << "\nBelum ada kendaraan yang parkir.\n";
-        } else {
-            cout << "\nDAFTAR KENDARAAN TERPARKIR:\n";
-            for (size_t i = 0; i < daftarKendaraan.size(); i++) {
-                if (!daftarKendaraan[i].sudahKeluar) {
-                    cout << "\nKendaraan ke-" << i + 1 << endl;
-                    cout << "Plat   : " << daftarKendaraan[i].plat << endl;
-                    cout << "Merek  : " << daftarKendaraan[i].merek << endl;
-                    cout << "Warna  : " << daftarKendaraan[i].warna << endl;
-                    cout << "Masuk  : ";
-                    tampilkanWaktu(daftarKendaraan[i].waktuMasuk);
-                    cout << endl;
+        if (pilihan == 1) {
+            tambahKendaraan(daftarKendaraan);
+        } else if (pilihan == 2) {
+            if (daftarKendaraan.empty()) {
+                cout << "\nBelum ada kendaraan yang parkir.\n";
+            } else {
+                cout << "\nDAFTAR KENDARAAN TERPARKIR:\n";
+                for (size_t i = 0; i < daftarKendaraan.size(); i++) {
+                    if (!daftarKendaraan[i].sudahKeluar) {
+                        cout << "\nKendaraan ke-" << i + 1 << endl;
+                        cout << "Plat   : " << daftarKendaraan[i].plat << endl;
+                        cout << "Merek  : " << daftarKendaraan[i].merek << endl;
+                        cout << "Warna  : " << daftarKendaraan[i].warna << endl;
+                        cout << "Masuk  : ";
+                        tampilkanWaktu(daftarKendaraan[i].waktuMasuk);
+                        cout << endl;
+                    }
                 }
             }
+        } else if (pilihan == 3) {
+            pembayaran(daftarKendaraan);
+        } else if (pilihan == 4) {
+            cout << "\nTerima kasih. Program selesai.\n";
+        } else {
+            cout << "Pilihan tidak valid.\n";
         }
-    } else if (pilihan == 3) {
-        cout << "\n--- FITUR PEMBAYARAN BELUM TERSEDIA ---\n";
-    } else if (pilihan == 4) {
-        cout << "\nTerima kasih. Program selesai.\n";
-    } else {
-        cout << "Pilihan tidak valid.\n";
-    }
 
-} while (pilihan != 4);
+    } while (pilihan != 4);
 
-    
+   
 
-}
+   
