@@ -98,7 +98,7 @@ void tambahKendaraan(vector<Kendaraan>& daftarKendaraan) {
     for (int i = 0; i < 5; i++) {
         cout << daftarWarna[i] << (i < 4 ? ", " : "\n");
     }
-    cout << "Masukkan warna       : \n";
+    cout << "Masukkan warna       : ";
     cin >> kendaraanBaru.warna;
     cout << "Masukkan waktu masuk (jam menit detik) : ";
     cin >> kendaraanBaru.waktuMasuk.jam >> kendaraanBaru.waktuMasuk.menit >> kendaraanBaru.waktuMasuk.detik;
