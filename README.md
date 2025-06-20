@@ -21,11 +21,10 @@ Fitur utama program:
 
 Teknologi:  
 ✔ `struct`, `class`,`array`, `vector`, `pointer`, `function`  
-✔ Modularisasi kode (`main.cpp`, `petugas.cpp`, `kendaraan.cpp`, `tampil.cpp`, `biaya.cpp`, `petugas.hpp`, `kendaraan.hpp`)
 
 ## 📸 Screenshot Program
 
-📂 [Link Google Drive - Screenshot Program](LINK_DI_SINI)
+📂 [Link Google Drive - Screenshot Program](https://drive.google.com/drive/folders/1WJ-hN1LDSGi9Is2d2pDXI0QvMnLVJ2Sx?usp=sharing)
 
 ## 🎥 Video Presentasi
 
